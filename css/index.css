@@ -1,0 +1,124 @@
+html,body,.container {
+			/*让content占满整个屏幕*/
+			height: 100%;
+			width: 100%;
+ }
+ .container {
+	 position: relative;
+	 }
+ .top {
+	 height: 120px;
+	 background-color: #25a46d;
+	 color: #ffffff;
+	 }
+.top>ul::after{
+	content: "";
+	display: block;
+	clear: both;
+}
+.top>ul>li{
+	width: 400px;
+	height: 100px;
+	float: left;
+}
+.top>ul>li:nth-child(2){
+	margin-right: 0px;
+	/*background-color: red;*/
+	position: absolute;
+	right: 0px;
+	top:10px;
+}
+ .container .logo {
+	 font-size: 26px;
+	 line-height: 120px;
+	 /*上下为0 左右为1em*/
+	 padding: 0 1em;
+	 }
+.container .top .right{
+	width: 180px;
+	height: 60px;
+	background-color: #25a46d;
+	position: relative;
+	margin-top: 20px;
+	padding-left: 0px;
+	line-height: 40px;
+}
+.container .top .right>ul::after{
+	content: "";
+	display: block;
+	clear: both;
+}
+.container .top .right>ul>li{
+	width: 60px;
+    float: left;
+}
+.container .top .right a{
+	color: #fff;
+}
+.container .top .right a:hover{
+	color: red;
+}
+.content {
+	 position: absolute;
+			top: 120px;
+			bottom: 0;
+			width: 100%;
+}
+a{
+	color: #fff;
+}
+ .left
+    {
+	 width: 220px;
+	 background-color: #78c699;
+	 height: 100%;
+	 float: left;
+	 color: #fff;
+	 font-size: 14px;
+}
+ .left > ul.left-nav {
+	 text-align: center;
+}
+ .left > ul.left-nav > li {
+
+	 line-height: 3em;
+	 border-bottom: 1px solid #cccccc;
+	 position: relative;
+}
+ .left > ul.left-nav > li i.iconfont {
+	 position: absolute;
+	 left: 3em;
+}
+ .left > ul.left-nav > li.current,
+ .left > ul.left-nav > li:hover {
+	 background-color: #fff;
+	 color: teal;
+}
+ .left > ul.left-nav > li.current a,
+ .left > ul.left-nav > li:hover a {
+	 color: teal;
+}
+ .right {
+	 margin-left: 220px;
+	 height: 100%;
+	 overflow-y: auto;
+	 padding: 1em;
+	 box-sizing: border-box;
+	 background-color: #fff;
+}
+.right>.wrapper>.btns::after{
+	content: "";
+	display: block;
+	clear: both;
+}
+ .wrapper {
+	 background-color: #ffffff;
+	 border-radius: 5px;
+	 padding: 1em;
+	 height: 100%;
+}
+}
+ .btns {
+	 margin-bottom: .5em;
+
+
