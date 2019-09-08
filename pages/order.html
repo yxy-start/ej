@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@
 	.order>.top{
 		height: 80px;
 		width: 100%;
-		background-color: #add8e6;
+		background-color: #329b7a;
 		margin:10px 0;
 	}
 	.order ul{
@@ -49,21 +48,21 @@
 		margin-top: 30px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
-		margin-right: 60px;
+		margin-right: 20px;
 	}
 
 	.center{
 		width: 100%;
 		height: 50px;
-		/*background-color: #329b7a;*/
+		background-color: #329b7a;
 		margin:10px 0;
 
 	}
 	.add{
-		height: 40px;
-		/*background-color: #329b7a;*/
-		/*padding-left: 1em;*/
-		/*padding-top: 10px;*/
+		height: 50px;
+		background-color: #329b7a;
+		padding-left: 1em;
+		/*padding-top: 20px;*/
 		margin:10px 0;
 
 
@@ -71,7 +70,7 @@
 	.btn2 {
 		height: 30px;
 		width: 90px;
-		/*margin: .5em 1em;*/
+		margin: .5em 1em;
 		border-radius: 5px;
 		color: #333;
 		border:1px solid #ccc;
@@ -80,7 +79,6 @@
 		line-height: 30px;
 		background-color: #ededed;
 		display: inline-block;
-		background-color: teal;
 		/*position: relative;*/
 		/*margin-top: 28px;*/
 	}
@@ -107,14 +105,13 @@
 		opacity: .9;
 	}
 	#model>.warpper{
-		width: 210px;
+		width: 250px;
 		height: 400px;
-		background-color:#add8e6;
+		background-color:#fff;
 		/*opacity: 1;*/
 		margin: 0 auto;
 		margin-top: 100px;
 		border-radius: 10px;
-		margin-left: 600px;
 	}
 	.table1{
 			margin:auto;
@@ -131,7 +128,7 @@
 	.tou{
 		width: 140px;
 		height: 140px;
-		background: #add8e6;
+		background: #fff;
 		position: relative;
 		margin: 0 auto;
 		top: 20px;
@@ -140,7 +137,8 @@
 		}
 	.icon-pingjia{
 		font-size: 120px;
-		color: teal;
+		color: #ccc;
+
 		}
 	.current {
 		background-color: #333;
@@ -148,7 +146,7 @@
 	.center .btn{
 		height: 30px;
 		width: 90px;
-		/*margin: .5em 1em;*/
+		margin: .5em 1em;
 		border-radius: 5px;
 		color: #333;
 		border:1px solid #ccc;
@@ -157,12 +155,9 @@
 		line-height: 30px;
 		background-color: #ededed;
 		display: inline-block;
-		/*margin-left: 2em;*/
+		margin-left: 2em;
 		/*margin-top:1.5em;*/
-		background-color: teal;
 	}
-	.table tr:nth-child(2n){
-		background: #ecf8f8;
 </style>
 </head>
 <body>
@@ -209,9 +204,9 @@
 	<div class="top">
 		 <ul>
 		 	<li>订单管理</li>
-		 	<!-- <li>
+		 	<li>
 			 <i class="iconfont icon-wenjuan2"></i>
-		 	订单详情</li> -->
+		 	订单详情</li>
 		 </ul>
 	</div>
 	<div class="center">
@@ -222,6 +217,8 @@
 	</div>
 	<div class="add">
 		<div id="btn_add" class="btn2">录入订单 +</div>
+		<div id="btn_dels" class="btn2">批量删除</div>
+
 	</div>
 	
 	<table class="table" id="order_tbl">
@@ -299,7 +296,7 @@
 								<td>`+item.productId+`</td>
 								<td>`+item.orderId+`</td>
 								<td>
-									<a class="btn_del" href="#">删除</a>
+									<a class="btn_del" id="btn_del" href="#">删除</a>
 									<a class="btn_upd" href="#">修改</a>
 								</td>
 							</tr>
@@ -341,12 +338,36 @@
 
 					}
 				})
-				 
-
-
-
-
- 
+		 	 	$("#btn_dels").click(function(){
+				var chk_value =[]; 
+				$('input[type="checkbox"]:checked').each(function(){ 
+					chk_value.push($(this).val()); 
+					console.log(chk_value);
+				}); 
+				if(chk_value.length<=0){
+					alert("请选择要删除的数据！");
+				} else {
+					if(confirm("你确定删除吗？"+chk_value)){
+						$.ajax({
+					            url:"../DeleteNotice",
+					            type: "GET",
+					            data: {subBox:chk_value+""},
+					            success: function () {
+					            	 window.location.reload();
+					            },
+					            error: function(){
+					            	alert(chk_value);
+					            }
+					    });
+					}
+				}
+				var url = baseURL+"/orderLine/batchDeleteOrderLine";
+						var data = "ids="+chk_value;
+						$.post(url,data,function(response){
+							alert(response.message);
+							reloadData();
+						}) 
+			});
 			 </script>  
 </body>
 </html>
