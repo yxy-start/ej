@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		$(function(){
+	var baseURL = "http://134.175.154.93:6677";
+
+// 加载数据
+function reloadData(){
+	var url = baseURL+"/customer/findCustomerAll";
+	$.get(url,function(response,status){
+		//1. 将tbody清空
+		$("#customer_tbl tbody").empty();
+		//2. 追加新的值
+		response.data.forEach(function(item){
+			var newTr = $(`<tr>
+				<td><input type="checkbox" value="`+item.id+`"></td>
+				<td>`+item.realname+`</td>
+				<td>`+item.status+`</td>
+				<td>`+item.photo+`</td>
+				<td>`+item.telephone+`</td>
+				<td>
+					<a class="btn_del" href="#">删除</a>
+					<a class="btn_upd" href="#">修改</a>
+				</td>
+			</tr>`);
+			$("#customer_tbl").append(newTr)
+		});
+	});
+}
+
+// 文档加载完毕之后执行
+$(function(){
+	//调用重载数据
+	reloadData();
+})
+
+//添加数据
+	$("#btn_add").on("click",function(){
+		$(".none").css("display","block");
+		$("#Add_content").css("display","block");
+		$(".add_cg").css("display","none");
+		
+
+
+	})
+
+		$(".add_input").on("click",function(){
+			
+			var url=baseURL+"/customer/saveCustomerOrUpdateCustomer";
+			var date={
+				realname:$("#realname").val(),
+				telephone:$(".telephone").val(),
+				status:$(".status").val(),
+			};
+
+			$.ajax(url,{
+				method:"post",
+				data:date,
+				success:function(result){
+					console.log(result);
+				}
+			})
+			$(".none").css("display","none");
+			$("#Add_content").css("display","none");
+			$(function(){
+			//调用重载数据
+			reloadData();
+		})
+		
+	})
+	//删除该行
+	$("tbody").on("click","A",function(event){
+		if(event.target.className==="btn_del"){
+			var url=baseURL+"/customer/deleteCustomerById";
+			var id=event.target.parentNode.parentNode.firstElementChild.firstElementChild.value;
+			var date ="id="+id;
+			console.log(id);
+			$.ajax(url,{
+				method:"post",
+				data:date,
+				success:function(result){
+					console.log(result);
+				}
+			})
+			$(function(){
+			//调用重载数据
+			reloadData();
+		})
+
+
+		}
+		// console.log(event.target);
+		//修改
+		if(event.target.className==="btn_upd"){
+			$(".none").css("display","block");
+			$("#Add_content").css("display","block");
+			$(".add_cg").css("display","block");
+			$(".add_input").css("display","none");
+
+			document.querySelector("input[type=hidden]").value=event.target.parentNode.parentNode.firstElementChild.firstElementChild.value;
+			
+			document.querySelector("input[name=realname]").value=event.target.parentNode.parentNode.firstElementChild.nextElementSibling.innerHTML;
+			 document.querySelector("input[name=status]").value=event.target.parentNode.parentNode.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+			 document.querySelector("input[name=telephone]").value=event.target.parentNode.parentNode.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+			//点击进行修改
+			console.log($("input[type=hidden]").val());
+			$(".add_cg").on("click",function(){
+				event.preventDefault();
+				var url=baseURL+"/customer/saveCustomerOrUpdateCustomer";
+				var date={
+					id:document.querySelector("input[type=hidden]").value,
+					realname:$("#realname").val(),
+					telephone:$(".telephone").val(),
+					status:$(".status").val(),
+				};
+
+				$.ajax(url,{
+				method:"post",
+				data:date,
+				success:function(result){
+					console.log(result);
+
+				}
+
+				})
+				$(function(){
+				//调用重载数据
+				reloadData();
+				})
+				
+
+					
+				$(".add_cg").css("display","none");		
+				$(".none").css("display","none");	
+				$("#Add_content").css("display","none");
+				$(".add_input").css("display","block");
+
+
+			})
+
+
+				
+			
+			
+		}
+
+		
+	})
+	$(".add_return").on("click",function(){
+		$(".none").css("display","none");
+		$("#Add_content").css("display","none");
+	})
+
+})
+	</script>
+	<style>
+		.table {
+		border-collapse: collapse;
+		width: 100%;
+		text-align: center;
+	}
+	.table thead{
+		background: #329b7a;
+		color: #fff;
+	}
+	.table td {
+		border: 1px solid #ccc;
+		line-height: 2em;
+	}
+	.table tr.current {
+		background-color: #ededed;
+	}
+	.table tr:nth-child(2n){
+		background: #ecf8f8;
+
+	}
+	.table a{
+		color: #30b58a;
+		text-decoration: none;
+	}
+	.table a:hover{
+		color: #729d93;
+	}
+	.none {
+		display: none;
+	}
+	.btn {
+		padding: .5em 1em;
+		border-radius: 3px;
+		color: #333;
+		border:1px solid #ccc;
+		cursor: pointer;
+		display: inline-block;
+	}
+	.btns{
+		margin-bottom: .5em;
+		
+	}
+	.btns>div{
+		background: teal;
+		color:#fff;
+		border-radius: 5px;
+	}
+	form{
+		margin-bottom: 5px;
+	}
+	input{
+		border: 1px solid #ccc;
+	}
+	.none{
+			position: absolute;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background: #666;
+			opacity: 0.5;
+			display: none;
+		}
+		/*内容添加表单*/
+		.none{
+			width: 101.5%;
+			height: 102%;
+			position: absolute;
+			top:-10px;
+			bottom: 10px;
+			left: -30px;
+			right: 10px;
+			background: #666;
+			opacity: 0.5;
+			display: none;
+			z-index: 1
+		}
+		/*内容添加表单*/
+		#Add_content{
+			width: 300px;
+			height: 300px;
+			
+			background-color: lightblue;
+			display: none;
+			position: fixed;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			margin:auto;
+
+			z-index: 2;
+		}
+		form{
+			font-size: 12px;
+			padding: 10px;
+			
+		}
+		form>div{
+			height: 30px;
+			border: 1px solid #ededed;
+			margin: 10px 20px;
+			overflow: hidden;
+			background:#60ae97;
+			
+			text-align: center;
+		}
+		form>div:nth-of-type(3){
+			height: 30px;
+		}
+		form>div>div,input{
+			float: left;
+			margin-top:8px;
+			border: none;
+			
+		}
+		form>div>div{
+			margin-left: 5px;
+			color: #ededed;
+			width: 16%;
+		}
+		form>div>input{
+			margin-left:7px;
+			height: 100%;
+			font-size: 10px;
+			width: 78%;
+			margin-top: 0;
+		}
+		form>.add_input,.add_return{
+			float: right;
+			background: teal;
+			color: #fff;
+			width: 80px;
+			line-height: 3em;
+			margin: 10px;
+			border-radius: 3px;
+			
+		}
+		.add_cg{
+			float: right;
+			background: teal;
+			color: #fff;
+			width: 80px;
+			line-height: 3em;
+			margin: 10px;
+			border-radius: 3px;
+			display: none;
+		}
+		.add_return{
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	
+
+	<div class="customer">
+	<div class="btns">
+		<div id="btn_add" class="btn">添加</div>
+		<div id="btn_import" class="btn">批量导入</div>
+	</div>
+	</div>
+	<table class="table" id="customer_tbl">
+		<thead>
+			<tr>
+				<td width="80px">编号</td>
+				<td>姓名</td>
+				<td>状态</td>
+				<td>照片</td>
+				<td>手机号</td>
+				<td width="100px">操作</td>
+			</tr>
+		</thead>
+		<tbody>
+			
+	</table>
+</div>
+	<!-- 遮罩 -->
+	<div class="none"></div>
+	<!-- 表单 -->
+	<div id="Add_content">
+		
+		<form action="javascript:void(0)">
+			<input type="hidden" name="id" />
+			<div class="name">
+				<div>姓名</div>
+				<input type="text" id="realname" name="realname">
+			</div>
+			<div>
+				<div>状态</div>
+				<input type="text" class="status" name="status">
+			</div>
+			<div >
+				<div>手机号</div>
+				<input type="text" class="telephone" name="telephone">
+			</div>
+			<div class="add_input">提交</div>
+			<div class="add_cg">修改</div>
+			<div class="add_return">返回</div>
+		</form>
+	</div>
+
+</body>
+</html>
+<style>
+	
+
+
+
+
+
+
+
+
+
+
+
