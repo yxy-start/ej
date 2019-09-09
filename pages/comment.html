@@ -3,14 +3,61 @@
 <head>
 	<meta charset="UTF-8">
 	<title>	评价管理</title>
-	<link rel="stylesheet" type="text/css" href="../css/comment.css">
+	<!-- <link rel="stylesheet" type="text/css" href="../css/comment.css"> -->
 	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<style type="text/css">
+			.btns {
+		margin-bottom: 5px;
+	}
+	.btn {
+		display: inline-block;
+		padding: .3em 1.2em;
+		border-radius: 5px;
+		border:1px solid #ccc;
+		color: #333;
+		cursor :pointer;
+		background: teal;
+		color: #ffffff;
+	}
+
+	table.table {
+		box-sizing: border-box;
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	table.table td ,
+	table.table th {
+		border: 1px solid #ccc;
+		line-height: 2em;
+		text-align: center;
+	}
+	table>thead{
+		background-color: #329b7a;
+	}
+
+	.table tbody tr:nth-child(2n){
+		background-color: #ecf8f8;
+	}
+	table.table tr.current {
+		background-color: #ededed;
+	}
+	
+		
+	
+	.none {
+		display: none;
+	}
+	.current{
+		background: #ffffff;
+	}
+	</style>
 </head>
 <body>
 <div class="comment">
-	<div class="btns">
-		<div class="btn" id="btn_add">添加</div>
-		<div class="btn">批量导入</div>
+	<div class="btns">>
+
+		<div class="btn" id="btn_add">添加</div		<div class="btn">批量导入</div>
 		<div class="btn">批量删除</div>
 	</div>
 	<div class="forms">

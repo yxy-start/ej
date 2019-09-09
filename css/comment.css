@@ -34,9 +34,9 @@
 	table.table tr.current {
 		background-color: #ededed;
 	}
-	.table input:[type=submit]{
-		border-radius: 3px;
-	}
+	
+		
+	
 	.none {
 		display: none;
 	}
