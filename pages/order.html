@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>订单</title>
 	<link rel="stylesheet" href="https://at.alicdn.com/t/font_1329399_1sma28x4ubxj.css">
-	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<!-- <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script> -->
     <style>
     body{
     	padding: 0px;
@@ -107,21 +107,30 @@
 		background-color: #ccc;
 	}
 	#model{
-		width: 100%;
-		height: 100%;
+		 
+		width: 101%;
+		height: 101%;
 		position: absolute;
-		background-color: #333;
-		opacity: .9;
+
+		/*background-color: #666;*/
+		/*opacity: .5;*/
+		background-color: rgba(0,0,0,0.5);
+		left: -15px;
+		top:-20px;
+
 	}
+	 
 	#model>.warpper{
 		width: 240px;
 		height: 400px;
 		background-color:#fff;
-		/*opacity: 1;*/
 		margin: 0 auto;
-		margin-top: 100px;
+		/*margin-top: 100px;*/
 		border-radius: 10px;
-		margin-left: 600px;
+		/*margin-left: 600px;*/
+		margin: 0 auto;
+		margin-top:200px;
+
 	}
 	.table1{
 			margin:auto;
@@ -214,14 +223,14 @@
 
 <div class="order">
 	<!-- <div>订单管理</div> -->
-	<div class="top">
+	<!-- <div class="top">
 		 <ul>
 		 	<li>订单管理</li>
-		 	<!-- <li>
+		 	<li>
 			 <i class="iconfont icon-wenjuan2"></i>
-		 	订单详情</li> -->
+		 	订单详情</li>
 		 </ul>
-	</div>
+	</div> -->
 	<div class="center">
 		<div class="btn">订单详情</div>
 		<div class="btn">订单状态</div>
@@ -340,6 +349,7 @@
 							reloadData();
 						});
 					}else if(event.target.className === "btn_upd"){
+						$("#model").css("display","block");
 						var id = event.target.parentNode.parentNode.children[0].firstElementChild.value;
 						var number = event.target.parentNode.parentNode.children[1].innerText;
 						var productId = event.target.parentNode.parentNode.children[2].innerText;
