@@ -1,41 +1,21 @@
 
 $(function(){
 
-	$(".customer").on("click",function(){
-		alert(5);
-		//加载顾客管理界面
-		$("#wrapper").load("./pages/customer.html");
-	})
 
-	$(".staff").on("click",function(){
-		alert(4);
-		//加载员工管理界面
-		$("#wrapper").load("./pages/staff.html");
-	})
+		//加载管理界面
+		
+	
+		
+		$(".left-nav").on("click","li",function(event){
+			$(".left-nav > li").removeClass("current");
+			console.log(event.target);
+			var url = $(this).attr("url");
+			$(this).addClass("current");
+			// console.log($(this).attr("url"));
+			$("#wrapper").load(url);
 
-	$(".order").on("click",function(){
-		alert(3);
-		//加载订单管理界面
-		$("#wrapper").load("./pages/order.html");
-	})
-
-	$(".comment").on("click",function(){
-		alert(2);
-		//加载问卷管理界面
-		$("#wrapper").load("./pages/comment.html");
-	})
-
-	$(".product").on("click",function(){
-		alert(1);
-		//加载顾客管理界面
-		$("#wrapper").load("./pages/product.html");
-	})
-
-
-
-
-
-
-
-
+		})
+		$("#first").trigger("click");
+		
+		
 })

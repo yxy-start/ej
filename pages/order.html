@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>订单</title>
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_1329399_1sma28x4ubxj.css">
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+    body{
+    	padding: 0px;
+    	margin: 0px;
+    }
+	.order{
+		width: 100%;
+		height: 100%;
+		background-color: #ededed;
+	}
+	.order>.top{
+		height: 80px;
+		width: 100%;
+		background-color: #8ff3c5;
+		margin:10px 0;
+	}
+	.order ul{
+		list-style: none;
+		display: flex;
+        flex-direction: row; 
+        justify-content: space-between;
+	}
+	.order ul>li{
+		width: 200px;
+		height: 50px;
+		text-align: center;
+	}
+	.order ul>li:nth-child(1){
+		font-size: 20px;
+		line-height: 4em;
+		width: 100px;
+	}
+	.order ul>li:nth-child(2){
+		background-color: #ededed;
+
+		cursor:pointer;
+		font-size: 14px;
+		/*line-height: 6em;*/
+		width: 100px;
+		height: 20px;
+		/*margin-top: 30px;*/
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin-right: 20px;
+	}
+
+	.center{
+		width: 100%;
+		height: 42px;
+		/*background-color: #329b7a;*/
+		margin:10px 0;
+
+	}
+	.add{
+		height: 32px;
+		/*background-color: #329b7a;*/
+		/*padding-left: 1em;*/
+		/*padding-top: 20px;*/
+		margin:10px 0;
+
+
+	}
+	.btn2 {
+		height: 30px;
+		width: 90px;
+		/*margin: .5em 1em;*/
+		border-radius: 5px;
+		color: #333;
+		border:1px solid #ccc;
+		cursor: pointer;
+		text-align: center;
+		line-height: 30px;
+		background-color: #ededed;
+		display: inline-block;
+		/*position: relative;*/
+		/*margin-top: 28px;*/
+		background-color: teal;
+	}
+	.table {
+		border-collapse: collapse;
+		width: 100%;
+		text-align: center;
+	}
+	.table td{
+		border: 1px solid #ccc;
+		line-height: 2em;
+	}
+	.table tr.current {
+		background-color: #ededed;
+	}
+	.table tr:nth-child(2n){
+		background: #ecf8f8;
+			}
+	.current { 
+		background-color: #ccc;
+	}
+	#model{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background-color: #333;
+		opacity: .9;
+	}
+	#model>.warpper{
+		width: 240px;
+		height: 400px;
+		background-color:#fff;
+		/*opacity: 1;*/
+		margin: 0 auto;
+		margin-top: 100px;
+		border-radius: 10px;
+		margin-left: 600px;
+	}
+	.table1{
+			margin:auto;
+			width: 100%;
+			position: relative;
+			top: 20px;
+			left: 0px;
+
+		}
+	 .submit{
+			text-align: center;
+			 
+		}
+	.tou{
+		width: 140px;
+		height: 140px;
+		background: #fff;
+		position: relative;
+		margin: 0 auto;
+		top: 20px;
+		border-radius: 50%;
+
+		}
+	.icon-pingjia{
+		font-size: 120px;
+		color: #ccc;
+
+		}
+	.current {
+		background-color: #333;
+	}
+	.center .btn{
+		height: 30px;
+		width: 90px;
+		/*margin: .5em 1em;*/
+		border-radius: 5px;
+		color: #333;
+		border:1px solid #ccc;
+		cursor: pointer;
+		text-align: center;
+		line-height: 30px;
+		background-color: #ededed;
+		display: inline-block;
+		/*margin-left: 2em;*/
+		/*margin-top:1.5em;*/
+		background-color: teal;
+
+	}
+</style>
+</head>
+<body>
+<div id="model" style="display:none">
+	<div class="warpper">
+		<div class="tou">
+		<i class="iconfont icon-pingjia"></i>
+	</div>
+		<div class="form">
+		<!-- 阻止跳转（异步） -->
+		<form action="javascript:void(0)">
+			<input type="hidden" name="id">
+			<table class="table1">
+				<tbody>
+					<!-- <tr>
+						<td height="40px"></td>
+						<td><input type="text" name="id"/></td>
+					</tr> -->
+					<tr>
+						<td height="40px">服务数量</td>
+						<td><input type="text" name="number"/></td>
+					</tr>
+					<tr>
+						<td height="40px">服务地址</td>
+						<td><input type="text" name="productId"/></td>
+					</tr>
+					<tr>
+						<td height="40px">订单地址</td>
+						<td><input type="text" name="orderId"/></td>
+					</tr>
+					<tr class="submit">
+						<td colspan="2"><input type="submit" value="提交" id="submit"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	</div>
+</div>
+ 
+
+<div class="order">
+	<!-- <div>订单管理</div> -->
+	<div class="top">
+		 <ul>
+		 	<li>订单管理</li>
+		 	<!-- <li>
+			 <i class="iconfont icon-wenjuan2"></i>
+		 	订单详情</li> -->
+		 </ul>
+	</div>
+	<div class="center">
+		<div class="btn">订单详情</div>
+		<div class="btn">订单状态</div>
+		<div class="btn">款项状态</div>
+		<div class="btn">货物状态</div>
+	</div>
+	<div class="add">
+		<div id="btn_add" class="btn2">录入订单 +</div>
+		<div id="btn_dels" class="btn2">批量删除</div>
+
+	</div>
+	
+	<table class="table" id="order_tbl">
+		<thead>
+			<tr bgcolor="#329b7a">
+				<td width="120px">id</td>
+				<td>服务数量</td>
+				<td>服务地址</td>
+				<td>订单地址</td>
+				 
+				<td width="160px">操作</td>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+			 <script>
+			  
+			    $("#btn_add").on("click",function(){
+			    	//alert(1);
+			    	var model = $("#model");
+			    	//console.log(model);
+			    	model.attr("style","display:block")
+			    })
+ 
+			    $("#submit").on("click",function(){
+			    	//alert(1);
+			    	var model = $("#model");
+			    	//console.log(model);
+			    	model.attr("style","display:none")
+			    })
+
+
+
+			   //为表单绑定事件
+
+			    document.forms[0].onsubmit = function(event){
+			    	//alert(1);
+			    	var id = $("id").value;
+			    	var number = $("number").value;
+			    	var productId = $("productId").value;
+			    	var orderId = $("orderId").value;
+					var url = baseURL+"/orderLine/insertOrderLine";
+					var data ={
+						id:id,
+						number:number,
+						productId:productId,
+						orderId:orderId
+					};
+
+					$.post(url,data,function(a,b){
+						alert(a.message);
+						reloadData();
+					});
+					
+					event.preventDefault();//阻止默认行为
+			    }
+
+		     
+		        //重载数据
+		    
+			 	var baseURL = "http://134.175.154.93:6677";
+
+			 	 function reloadData(){
+			 	 	var url = baseURL+"/orderLine/findAllOrderLine";
+			 	 	$.get(url,function(response,status){
+			 	 		
+			 	 	$("#order_tbl tbody").empty();	
+			 	 	response.data.forEach(function(item){
+			 	 		var newTr = $(`
+			 	 			<tr>
+								<td><input type="checkbox" value="`+item.id+`"></td>
+								<td>`+item.number+`</td>
+								<td>`+item.productId+`</td>
+								<td>`+item.orderId+`</td>
+								<td>
+									<a class="btn_del" id="btn_del" href="#">删除</a>
+									<a class="btn_upd" href="#">修改</a>
+								</td>
+							</tr>
+			 	 			`);
+							$("#order_tbl").append(newTr)
+
+			 	 	    });
+			 	    });
+			 	 }
+			 	 $(function(){
+					reloadData();
+				})
+			 	 //删除 操作
+
+		 	 	$("tbody").on("click",'a',function(){
+			 		//alert(1);
+					if(event.target.className === "btn_del"){
+						//$(this).parents("tr").remove();
+						var id = event.target.parentNode.parentNode.firstElementChild.firstElementChild.value;
+						// 进行删除
+						var url = baseURL+"/orderLine/deleteOrderLineById";
+
+						var data = "id="+id; 
+						//console.log("data2",typeof data);
+					  
+						$.post(url,data,function(response,status){
+							alert(response.message);
+							reloadData();
+						});
+					}else if(event.target.className === "btn_upd"){
+						var id = event.target.parentNode.parentNode.children[0].firstElementChild.value;
+						var number = event.target.parentNode.parentNode.children[1].innerText;
+						var productId = event.target.parentNode.parentNode.children[2].innerText;
+						var orderId = event.target.parentNode.parentNode.children[3].innerText;
+						document.querySelector("input[name=id]").value = id;
+						document.querySelector("input[name=number]").value = number;
+						document.querySelector("input[name=productId]").value = productId;
+						document.querySelector("input[name=orderId]").value = orderId;
+
+					}
+				})
+		 	 	$("#btn_dels").click(function(){
+				var chk_value =[]; 
+				$('input[type="checkbox"]:checked').each(function(){ 
+					chk_value.push($(this).val()); 
+					console.log(chk_value);
+				}); 
+				if(chk_value.length<=0){
+					alert("请选择要删除的数据！");
+				} else {
+					if(confirm("你确定删除吗？"+chk_value)){
+						$.ajax({
+					            url:"../DeleteNotice",
+					            type: "GET",
+					            data: {subBox:chk_value+""},
+					            success: function () {
+					            	 window.location.reload();
+					            },
+					            error: function(){
+					            	alert(chk_value);
+					            }
+					    });
+					}
+				}
+				var url = baseURL+"/orderLine/batchDeleteOrderLine";
+						var data = "ids="+chk_value;
+						$.post(url,data,function(response){
+							alert(response.message);
+							reloadData();
+						}) 
+			});
+			 </script>  
+</body>
+</html>
+
+
+
