@@ -1,5 +1,48 @@
+<style>
+	.btns {
+		margin-bottom: 5px;
+	}
+	.btn {
+		display: inline-block;
+		padding: .3em 1.2em;
+		border-radius: 3px;
+		border:1px solid #ccc;
+		color: #333;
+		cursor :pointer;
+	}
+	table.table {
+		box-sizing: border-box;
+		width: 100%;
+		border-collapse: collapse;
+	}
+	table.table td ,
+	table.table th {
+		border: 1px solid #ccc;
+		line-height: 2em;
+		text-align: center;
+	}
+
+	table.table tr.current {
+		background-color: #ededed;
+	}
+
+	.none {
+		display: none;
+	}
+	.current{
+		background: #ffffff;
+	}
+	.daohang{
+	background-color: #329b7a;
+}
+tbody >tr:nth-child(even){
+	background: #ecf8f8;
+}
+tbody >tr:nth-child(odd){
+	background: #ffffff;
+}
+</style>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/staff.css">
 <script>
 var baseURL = "http://134.175.154.93:6677";
 // 初始化数据
@@ -45,6 +88,7 @@ $(function(){
 	// 为删除跟修改按钮绑定事件
 	var url = "/waiter/deleteWaiterById";
 	var url1 = "/waiter/updateWaiter";
+	var url2 =  "/waiter/insertWaiter";
 	$("#waiter_tbl > tbody").on("click","a",function(){
 		switch(this.className){
 			case "btn_del":
@@ -52,7 +96,11 @@ $(function(){
 				var id = $(this).parents("tr").find("input").val();
 
 				$.get(baseURL+url,{id:id},function(response){
-					console.log(response);
+					
+					 if (response.status ===200) {
+					 	alert("删除成功");
+					 	initData();
+					 }
 					
 				})
 
@@ -70,12 +118,15 @@ $(function(){
 				$('.init_name').val(realname);
 				$('.init_tel').val(telephone);
 				$('.init_pass').val(password);
+				$('.init_id').val(id);
+
 				if(id){
 					 url1 =  "/waiter/updateWaiter";
 					data = "id="+id+"&realname="+realname+"&telephone="+telephone+"&password="+password
 				}else{
-					url1 =  "/waiter/insertWaiter";
+					url2 =  "/waiter/insertWaiter";
 					 data = "realname="+realname+"&telephone="+telephone+"&password="+password
+
 
 				}
 				var obj = {
@@ -89,10 +140,15 @@ $(function(){
 					console.log(response);
 					initData();
 					 
+						
+
+
 				})
 				break;
 		}
 	})
+
+
 
 })
 //为添加按钮绑定事件处理函数
@@ -108,6 +164,8 @@ $(function(){
 	 	$(".init_tel").val("");
 	 	$(".init_pass").val("");
 	 });
+	 var id = document.querySelector("input[name=id]").value;
+	 
 	 //为保存按钮添加提交事件
 	 $(".save").on("click",function(){
 	 	//把自己添加的信息的值赋给后台
@@ -115,12 +173,16 @@ $(function(){
 	 	obj.telephone=$(".init_tel").val();
 	 	obj.password=$(".init_pass").val();
 	 	$.post(baseURL+url,obj,function(response){
-	 		// console.log(response);
+	 		if (response.status === 200) {
+	 			alert("保存成功");
+	 			initData();
+	 		}
 	 		 
 	 	})
 
-	})
-	 
+
+	})	 
+
 })
 </script>
 <div class="waiter">
@@ -131,7 +193,7 @@ $(function(){
 	</div>
 	<div class="forms">
 		<form action="javascript:void(0)">
-			<input type="hidden" name="id">
+			<input type="hidden" name="id" class="init_id">
 			<table>
 				<tbody>
 					<tr>
@@ -149,7 +211,7 @@ $(function(){
 						<td><input type="password" name="password" class="init_pass"></td>
 					</tr>
 					<tr>
-						<td><input type="submit" value="提交" class="save"></td>
+						<td><input type="submit" value="保存" class="save"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -166,7 +228,8 @@ $(function(){
 				<th width="100px">操作</th>
 			</tr>
 		</thead>
-		<tbody>		
+		<tbody>
+			
 		</tbody>
 	</table>
 

@@ -1,3 +1,56 @@
-div{
-	color: red;
-}
+.table {
+			border-collapse: collapse;
+			width: 100%;
+			text-align: center;
+		}
+		.table td {
+			border: 1px solid #ccc;
+			line-height: 2em;
+		}
+		.table tr.current {
+			background-color: #ededed;
+		}
+		.daohang{
+			background-color:#329b7a;
+		}
+		.none {
+			display: none;
+		}
+		.btn {
+			padding: .5em 1em;
+			border-radius: 3px;
+			/*background-color: teal;*/
+			border: 1px solid #c2c2c2;
+			color: #333;
+			cursor: pointer;
+			display: inline-block;
+		}
+		.sousuo{
+			float: right;
+			margin-right: 50px;
+		}
+		.sousuo >input{
+			width: 200px;
+			height: 30px;
+
+		}
+		.sousuo1{
+			float: right;
+			width: 40px;
+			height: 33.6px;
+			border: 1px solid #c2c2c2;
+			margin-right: -245px;
+		}
+		a{
+			color: #333;
+			text-decoration-line: none;
+		}
+		.btns {
+			margin-bottom: .5em;
+		}
+		tbody >tr:nth-child(odd){
+			background:#ecf8f8;
+		}
+		tbody >tr:nth-child(even){
+			background:#ffffff;
+		}
