@@ -1,0 +1,173 @@
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/staff.css">
+<script>
+var baseURL = "http://134.175.154.93:6677";
+// 初始化数据
+function initData(){
+	var url = "/waiter/findAllWaiter"
+	$.get(baseURL+url,function(response){
+		// console.log(response.data);
+		$("#customer_tbl > tbody").empty();
+		response.data.forEach(function(item){
+			var newTr = $(`<tr>
+				<td><input type="checkbox" name= "id" value="`+item.id+`"></td>
+				<td>`+item.realname+`</td>
+				<td>`+item.photo+`</td>
+				<td>`+item.telephone+`</td>
+				<td>`+item.password+`</td>
+				<td>
+					<a class="btn_del" href="javascript:void(0)">删除</a>
+					<a class="btn_upd" href="javascript:void(0)">修改</a>
+				</td>
+			</tr>`);
+			$("#waiter_tbl > tbody").append(newTr);
+			// console.log(newTr);
+			//鼠标滑过当前行背景变成灰色
+			 $("#waiter_tbl>tbody").on("mouseover","td",function(event){
+			 	var target = event.target;
+			 	target.parentNode.className = "current";
+
+			 });
+			 //鼠标滑出当前行颜色恢复为原始颜色
+			  $("#waiter_tbl>tbody").on("mouseout","td",function(event){
+			 	var target = event.target;
+			 	target.parentNode.className = "";
+
+			 });
+
+		});
+	});
+}
+
+$(function(){
+	// 初始化加载
+	initData();
+	// 为删除跟修改按钮绑定事件
+	var url = "/waiter/deleteWaiterById";
+	var url1 = "/waiter/updateWaiter";
+	$("#waiter_tbl > tbody").on("click","a",function(){
+		switch(this.className){
+			case "btn_del":
+				
+				var id = $(this).parents("tr").find("input").val();
+
+				$.get(baseURL+url,{id:id},function(response){
+					console.log(response);
+					
+				})
+
+				break;
+			case "btn_upd":
+			 // 点击修改的时候把表格tr中的姓名和密码电话获取 放到上面的表单中
+
+ 				var id = $(this).parents("tr").find("input").val();
+
+				var realname= $(this).parents("tr").find("td:nth-child(2)").text();
+				
+				var telephone = $(this).parents("tr").find("td:nth-child(4)").text();
+				var password = $(this).parents("tr").find("td:nth-child(5)").text();
+				//给表单的内容赋值
+				$('.init_name').val(realname);
+				$('.init_tel').val(telephone);
+				$('.init_pass').val(password);
+				if(id){
+					 url1 =  "/waiter/updateWaiter";
+					data = "id="+id+"&realname="+realname+"&telephone="+telephone+"&password="+password
+				}else{
+					url1 =  "/waiter/insertWaiter";
+					 data = "realname="+realname+"&telephone="+telephone+"&password="+password
+
+				}
+				var obj = {
+					id:id,
+					telephone:telephone,
+					realname:realname,
+					password:password,
+				}
+				
+				$.post(baseURL+url1,obj,function(response){
+					console.log(response);
+					initData();
+					 
+				})
+				break;
+		}
+	})
+
+})
+//为添加按钮绑定事件处理函数
+$(function(){
+	//初始化加载
+	initData();
+	//为添加按钮绑定事件
+	var url = "/waiter/insertWaiter";
+	var obj = {};
+	//点击添加按钮 添加的表单清空
+	 $(btn_add).on("click",function(){
+	 	$(".init_name").val("");
+	 	$(".init_tel").val("");
+	 	$(".init_pass").val("");
+	 });
+	 //为保存按钮添加提交事件
+	 $(".save").on("click",function(){
+	 	//把自己添加的信息的值赋给后台
+	 	obj.realname = $(".init_name").val();
+	 	obj.telephone=$(".init_tel").val();
+	 	obj.password=$(".init_pass").val();
+	 	$.post(baseURL+url,obj,function(response){
+	 		// console.log(response);
+	 		 
+	 	})
+
+	})
+	 
+})
+</script>
+<div class="waiter">
+	<div class="btns">
+		<div class="btn" id="btn_add">添加</div>
+		<div class="btn">批量导入</div>
+		<div class="btn">批量删除</div>
+	</div>
+	<div class="forms">
+		<form action="javascript:void(0)">
+			<input type="hidden" name="id">
+			<table>
+				<tbody>
+					<tr>
+						<td>姓名</td>
+						<td><input type="text" name="realname" class="init_name"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>手机号</td>
+						<td><input type="text" name="telephone" class="init_tel"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>密码</td>
+						<td><input type="password" name="password" class="init_pass"></td>
+					</tr>
+					<tr>
+						<td><input type="submit" value="提交" class="save"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<table class="table" id="waiter_tbl">
+		<thead>
+			<tr class="daohang">
+				<th width="60px">编号</th>
+				<th width="200px">姓名</th>
+				<th>头像</th>
+				<th>手机</th>
+				<th>密码</th>
+				<th width="100px">操作</th>
+			</tr>
+		</thead>
+		<tbody>		
+		</tbody>
+	</table>
+
+</div>
