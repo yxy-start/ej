@@ -1,5 +1,48 @@
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/staff.css">
+<style>
+.btns {
+	margin-bottom: 5px;
+}
+.btn {
+	display: inline-block;
+	padding: .3em 1.2em;
+	border-radius: 3px;
+	border:1px solid #ccc;
+	color: #333;
+	cursor :pointer;
+}
+table.table {
+	box-sizing: border-box;
+	width: 100%;
+	border-collapse: collapse;
+}
+table.table td ,
+table.table th {
+	border: 1px solid #ccc;
+	line-height: 2em;
+	text-align: center;
+}
+
+table.table tr.current {
+	background-color: #ededed;
+}
+
+.none {
+	display: none;
+}
+.current{
+	background: #ffffff;
+}
+.daohang{
+	background-color: #329b7a;
+}
+tbody >tr:nth-child(even){
+	background: #ecf8f8;
+}
+tbody >tr:nth-child(odd){
+	background: #ffffff;
+}	
+</style>
 <script>
 var baseURL = "http://134.175.154.93:6677";
 // 初始化数据
