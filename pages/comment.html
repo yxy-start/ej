@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>	评价管理</title>
+	<link rel="stylesheet" type="text/css" href="../css/comment.css">
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="comment">
+	<div class="btns">
+		<div class="btn" id="btn_add">添加</div>
+		<div class="btn">批量导入</div>
+		<div class="btn">批量删除</div>
+	</div>
+	<div class="forms">
+		<form action="javascript:void(0)">
+			<input type="hidden" name="id">
+			<table>
+				<tbody>
+					<tr>
+						<td>订单编号</td>
+						<td><input type="text" name="orderId" class="orderId"></td>
+						<td></td>
+					
+						<td>评论内容</td>
+						<td><input type="text" name="content" class="content"></td>
+						<td></td>
+					
+						<td>评论时间</td>
+						<td><input type="text" name="commentTime" class="CommentTime"></td>
+					
+						<td><input type="submit" value="保存" class="save" style="background:teal;border-radius: 5px;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<table class="table" id="comment_tbl">
+		<thead>
+			<tr>
+				<th >订单编号</th>
+				<th >内容</th>
+				 
+				<th>评论时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+
+</div>
+<script>
+var baseURL = "http://134.175.154.93:6677";
+// 初始化数据
+function initData(){
+	var url = "/comment/queryBasic"
+	$.get(baseURL+url,function(response){
+		// console.log(response.data);
+		$("#comment_tbl > tbody").empty();
+		response.data.forEach(function(item){
+			var newTr = $(`<tr>
+				<td><input type="checkbox" name= "id" value="`+item.id+`"></td>
+				<td>`+item.content+`</td>
+				<td>`+item.contentTime+`</td>
+				<td>
+					<a class="btn_del" href="javascript:void(0)">删除</a>
+					<a class="btn_upd" href="javascript:void(0)">修改</a>
+				</td>
+			</tr>`);
+			$("#comment_tbl > tbody").append(newTr);
+			// console.log(newTr);
+			//鼠标滑过当前行背景变成灰色
+			 $("#comment_tbl>tbody").on("mouseover","td",function(event){
+			 	var target = event.target;
+			 	target.parentNode.className = "current";
+
+			 });
+			 //鼠标滑出当前行颜色恢复为原始颜色
+			  $("#comment_tbl>tbody").on("mouseout","td",function(event){
+			 	var target = event.target;
+			 	target.parentNode.className = "";
+
+			 });
+
+		});
+	});
+}
+
+$(function(){
+	// 初始化加载
+	initData();
+	// 为删除跟修改按钮绑定事件
+	var url = "/comment/deleteCommentById";
+	//var url1 = "/waiter/updateWaiter";
+	$("#comment_tbl > tbody").on("click","a",function(){
+		switch(this.className){
+			case "btn_del":
+				
+				var id = $(this).parents("tr").find("input").val();
+
+				$.get(baseURL+url,{id:id},function(response){
+					console.log(response);
+					
+				})
+
+				break;
+			//case "btn_upd":
+			 // 点击修改的时候把表格tr中的姓名和密码电话获取 放到上面的表单中
+
+ 				/*var id = $(this).parents("tr").find("input").val();
+
+				var realname= $(this).parents("tr").find("td:nth-child(2)").text();
+				
+				var telephone = $(this).parents("tr").find("td:nth-child(4)").text();
+				var password = $(this).parents("tr").find("td:nth-child(5)").text();
+				//给表单的内容赋值
+				$('.init_name').val(realname);
+				$('.init_tel').val(telephone);
+				$('.init_pass').val(password);
+				if(id){
+					 url1 =  "/waiter/updateWaiter";
+					data = "id="+id+"&realname="+realname+"&telephone="+telephone+"&password="+password
+				}else{
+					url1 =  "/waiter/insertWaiter";
+					 data = "realname="+realname+"&telephone="+telephone+"&password="+password
+
+
+				}
+				var obj = {
+					id:id,
+					telephone:telephone,
+					realname:realname,
+					password:password,
+				}
+				
+				$.post(baseURL+url1,obj,function(response){
+					console.log(response);
+					initData();
+					 
+						
+
+
+				})
+				break;*/
+		}
+	})
+
+
+
+})
+//为添加按钮绑定事件处理函数
+$(function(){
+	//初始化加载
+	initData();
+	//为添加按钮绑定事件
+	var url = "/comment/insertComment";
+	//点击添加按钮 添加的表单清空
+	var obj = {};
+	 $(btn_add).on("click",function(){
+
+	 	$(".orderId").val("");
+	 	$(".comment").val("");
+	 	$(".contentTime").val("");
+	 });
+	 //为保存按钮添加提交事件
+	 $(".save").on("click",function(){
+	 	//把自己添加的信息的值赋给后台
+	 	obj.orderId = $(".orderId").val();
+	 	obj.content=$(".content").val();
+	 	obj.contentTime=$("contentTime").val();
+	 	$.post(baseURL+url,obj,function(response){
+	 		// console.log(response);
+	 		 
+	 	})
+
+
+	})
+})
+</script>
+	
+</body>
+</html>																																																																

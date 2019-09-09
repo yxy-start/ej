@@ -1,0 +1,45 @@
+	.btns {
+		margin-bottom: 5px;
+	}
+	.btn {
+		display: inline-block;
+		padding: .3em 1.2em;
+		border-radius: 5px;
+		border:1px solid #ccc;
+		color: #333;
+		cursor :pointer;
+		background: teal;
+		color: #ffffff;
+	}
+
+	table.table {
+		box-sizing: border-box;
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	table.table td ,
+	table.table th {
+		border: 1px solid #ccc;
+		line-height: 2em;
+		text-align: center;
+	}
+	table>thead{
+		background-color: #329b7a;
+	}
+
+	.table tbody tr:nth-child(2n){
+		background-color: #ecf8f8;
+	}
+	table.table tr.current {
+		background-color: #ededed;
+	}
+	.table input:[type=submit]{
+		border-radius: 3px;
+	}
+	.none {
+		display: none;
+	}
+	.current{
+		background: #ffffff;
+	}
