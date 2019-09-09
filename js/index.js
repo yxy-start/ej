@@ -12,7 +12,7 @@ $(function(){
 			var url = $(this).attr("url");
 			$(this).addClass("current");
 			// console.log($(this).attr("url"));
-			$("#wrapper").load(url);
+			$("#wrapper").load(url+"?time",Math.random());
 
 		})
 		$("#first").trigger("click");
