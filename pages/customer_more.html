@@ -1,0 +1,54 @@
+	<script>
+		$(function(){
+			var id=sessionStorage.getItem("customerId");
+			console.log(id);
+			var baseURL = "http://134.175.154.93:6677";
+			var url=baseURL+"/customer/findCustomerById"+"?id="+id;
+			$.get(url,function(result){
+
+				if(result.status==200){
+					console.log(result);
+					
+						$(".telephone").text(result.data.telephone);
+						$(".name").text(result.data.realname);
+					
+				}else{
+					console.log(result.status);
+				}
+			})
+
+		})
+	</script>
+	<style>
+
+		.outer{
+			margin-top: 10px;
+			width: 400px;
+			height: 200px;
+		}
+		.outer>div{
+			width: 100px;
+			height: 50px;
+			float: left;
+			margin-left: 10px;
+		}
+		.outer>.photo{
+			margin-left: 0px;
+			width: 100px;
+			height: 100px;
+			background: #ededed;
+		}
+
+
+	</style>
+
+<body>
+	<h1>详情</h1>
+	<div class="outer">
+		<div class="photo"></div>
+		<div >姓名:</div>
+		<div class="name"></div>
+		<div >电话号码:</div>
+		<div class="telephone"></div>
+	</div>
+</body>

@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://at.alicdn.com/t/font_1400394_cw6c2uu14ko.css">
 	<script>
 		$(function(){
 	var baseURL = "http://134.175.154.93:6677";
@@ -25,6 +26,7 @@ function reloadData(){
 				<td>
 					<a class="btn_del" href="#">删除</a>
 					<a class="btn_upd" href="#">修改</a>
+					<a class="btn_more" href="#">详情</a>
 				</td>
 			</tr>`);
 			$("#customer_tbl").append(newTr)
@@ -43,37 +45,36 @@ $(function(){
 		$(".none").css("display","block");
 		$("#Add_content").css("display","block");
 		$(".add_cg").css("display","none");
-		
-
-
+		$("input[type=text]").val(" ");
 	})
 
-		$(".add_input").on("click",function(){
+	$(".add_input").on("click",function(){
 			
-			var url=baseURL+"/customer/saveCustomerOrUpdateCustomer";
-			var date={
+		var url=baseURL+"/customer/saveCustomerOrUpdateCustomer";
+		var date={
 				realname:$("#realname").val(),
 				telephone:$(".telephone").val(),
 				status:$(".status").val(),
-			};
+		};
 
-			$.ajax(url,{
-				method:"post",
-				data:date,
-				success:function(result){
+		$.ajax(url,{
+			method:"post",
+			data:date,
+			success:function(result){
 					console.log(result);
-				}
-			})
-			$(".none").css("display","none");
-			$("#Add_content").css("display","none");
-			$(function(){
+			}
+		})
+		$(".none").css("display","none");
+		$("#Add_content").css("display","none");
+		$(function(){
 			//调用重载数据
 			reloadData();
 		})
 		
 	})
-	//删除该行
+	//事件代理
 	$("tbody").on("click","A",function(event){
+		//删除该行
 		if(event.target.className==="btn_del"){
 			var url=baseURL+"/customer/deleteCustomerById";
 			var id=event.target.parentNode.parentNode.firstElementChild.firstElementChild.value;
@@ -131,9 +132,6 @@ $(function(){
 				//调用重载数据
 				reloadData();
 				})
-				
-
-					
 				$(".add_cg").css("display","none");		
 				$(".none").css("display","none");	
 				$("#Add_content").css("display","none");
@@ -141,13 +139,18 @@ $(function(){
 
 
 			})
-
-
-				
-			
-			
 		}
+		//为详情添加事件
+		$(".btn_more").on("click",function(event){
+			var id=$(this).parents("tr").children().eq(0).find("input").val();
+			// alert("1");
+			
+			var url="./pages/customer_more.html"
+			$("#wrapper").load(url+"?time",Math.random());
 
+			sessionStorage.setItem("customerId",id);
+
+		})
 		
 	})
 	//返回
@@ -194,6 +197,62 @@ $(function(){
 		})
 
 	})
+
+
+	//模糊查询
+	$(".btn_search").on("click",function(){
+
+		var realname=$("input[type=search]").val();
+		// alert(realname);
+		var url=baseURL+"/customer/queryCustomer"+"?realname="+realname
+		$("#btn_add").css("display","none");
+		$("#btn_back").css("display","inline-block");
+		$.get(url,function(response,status){
+			if(response.status==200){
+				//检查data数组中是否为空
+				if(response.data.length==0){
+					alert("查询的人不存在")
+				}else{
+					//1. 将tbody清空
+				$("#customer_tbl tbody").empty();
+				//2. 追加新的所查询到的值
+				response.data.forEach(function(item){
+					// console.log(item.realname);
+					var newTr = $(`<tr>
+						<td><input type="checkbox" value="`+item.id+`"></td>
+						<td>`+item.realname+`</td>
+						<td>`+item.status+`</td>
+						<td>`+item.photo+`</td>
+						<td>`+item.telephone+`</td>
+						<td>
+							<a class="btn_del" href="#">删除</a>
+							<a class="btn_upd" href="#">修改</a>
+							<a class="btn_more" href="#">详情</a>
+						</td>
+					</tr>`);
+			$("#customer_tbl").append(newTr)
+			});
+				}
+				
+
+				console.log(response);
+
+			}else{
+				alert(response.message);
+			}
+		})
+
+	})
+	//查询返回键
+	$("#btn_back").on("click",function(){
+		reloadData();
+		$("#btn_add").css("display","inline-block");
+		$("#btn_back").css("display","none");
+		$("input[type=search]").val(" ");
+		
+	})
+
+
 })
 
 	
@@ -241,10 +300,50 @@ $(function(){
 		margin-bottom: .5em;
 		
 	}
-	.btns>div{
+	.btns>div:nth-child(1),.btns>div:nth-child(2){
 		background: teal;
 		color:#fff;
 		border-radius: 5px;
+	}
+	.btns>div:last-child{
+
+			/*width: 100px;*/
+			float: right;
+		}
+	.btns input[type=search]{
+		width: 200px;
+		height: 25px;
+		border:1px solid #ccc;
+		margin: 0;
+		border-right: 0;
+		/*margin-right: 10px;*/
+	}
+	.search{
+		position: relative;
+	}
+	
+	.btns .search>div:nth-child(2){
+		
+		position: absolute;
+		right: 55px;
+		color: #ccc;
+		height: 25px;
+		line-height: 25px;
+		margin-bottom: .5em;
+	}
+	.btns .search>div:last-child{
+		height: 25px;
+		line-height: 25px;
+		margin-bottom: .5em;
+		/*margin-right:8px;*/
+		width: 3em;
+		text-align: center;
+		background: teal;
+		color:#fff;
+		border-bottom-right-radius: 2px;
+		border-top-right-radius: 2px;
+		float: right;
+		cursor: pointer;
 	}
 	form{
 		margin-bottom: 5px;
@@ -263,7 +362,7 @@ $(function(){
 		}
 		/*内容添加表单*/
 		.none{
-			width: 101.5%;
+			width: 101.8%;
 			height: 102%;
 			position: absolute;
 			top:-10px;
@@ -278,9 +377,10 @@ $(function(){
 		/*内容添加表单*/
 		#Add_content{
 			width: 300px;
-			height: 300px;
-			
+			height: 260px;
+			padding-top: 40px;
 			background-color: lightblue;
+			box-shadow: 0 0 3px #ededed;
 			display: none;
 			position: fixed;
 			left: 0;
@@ -349,6 +449,12 @@ $(function(){
 		.add_return{
 			float: left;
 		}
+		#btn_back{
+			display: none;
+			float: left;
+			text-align: center;
+			margin-right: 10px;
+		}
 	</style>
 </head>
 <body>
@@ -358,6 +464,10 @@ $(function(){
 	<div class="btns">
 		<div id="btn_add" class="btn">添加</div>
 		<div id="btn_dels" class="btn">批量删除</div>
+		<div id="btn_back" class="btn">返回</div>
+		<div class="search ">
+			<input type="search" name="search" placeholder="请输入姓名"><div class="iconfont icon-sousuo "></div><div class="btn_search" >搜索</div>
+		</div>
 	</div>
 	</div>
 	<table class="table" id="customer_tbl">
