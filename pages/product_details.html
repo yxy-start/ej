@@ -1,0 +1,36 @@
+<style>
+	.details{
+		border: 1px solid #ccc;
+		width: 500px;
+		height: 50px;
+		background: teal;
+		font-size: 20px;
+		color: #fff;
+		line-height: 50px;
+		text-indent: 2em;
+		/*text-align: center;*/
+	}
+	.back{
+		margin-right: 20px;
+		border-radius: 3px;
+		width: 50px;
+		height: 30px;
+		background: teal;
+		color: #fff;
+		text-align: center;
+		line-height: 30px;
+	}
+</style>
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_1400113_xuenf4f6tn.css">
+<script>
+	$(function{
+		$(".back").click(function(){
+			var url=".pages/product.html"
+			$("#wrapper").load(url+"?time",Math.random())
+		});
+	});
+</script>
+<div class="product_details">
+	<div class="details">产品详情</div>
+	<div class="back iconfont icon-fanhui"></div>
+</div>

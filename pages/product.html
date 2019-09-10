@@ -1,4 +1,5 @@
-<style>.table {
+<style>
+.table {
 			border-collapse: collapse;
 			width: 100%;
 			text-align: center;
@@ -40,7 +41,12 @@
 			height: 29px;
 			border: 1px solid #c2c2c2;
 			margin-right: -242px;
+			text-align: center;
+			line-height: 29px;
+			font-size: 50px;
+			color: #7a7a7a;
 		}
+		
 		a{
 			color: #333;
 			text-decoration-line: none;
@@ -55,7 +61,7 @@
 			background:#ffffff;
 		}	
 		</style>
-
+	<link rel="stylesheet" href="http://at.alicdn.com/t/font_1400113_iepbz1bq7mp.css">
 	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 	<!-- <script type="text/javascript" src="../js/product.js"></script> -->
 <body>
@@ -64,7 +70,7 @@
 		<div id="btn_import" class="btn">批量删除</div>
 		<div id="btn_add" class="btn">导出</div>
 		<div class="sousuo"><input type="text" placeholder="请输入您想要查询的内容"></div>
-		<div class="sousuo1">	</div>
+		<div class="sousuo1 iconfont icon-sousuo2" >	</div>
 	</div>
 	
 	<div style="margin-bottom: .5em">
@@ -103,6 +109,7 @@
 				<td>
 					<a class="btn_del" href="#">删除</a>
 					<a class="btn_upd" href="#">修改</a>
+					<a class="btn_details" href="#">详情</a>
 				</td>
 			</tr>
 		</tbody>
@@ -120,6 +127,7 @@
 			}
 		})
 		*/
+		//
 		var baseURL = "http://134.175.154.93:6677";
 
 		var btn_add = document.getElementById("btn_add");
@@ -132,7 +140,7 @@
 			var name = document.querySelector("input[name=name]").value;
 			var description = document.querySelector("input[name=description]").value;
 
-			var url = baseURL+"/product/updateProduct";
+			var url = baseURL+"/product/insertProduct";
 			var data;
 			 if(id){
 				data = "id="+id+"&name="+name+"&description="+description;
@@ -149,13 +157,15 @@
 
 			event.preventDefault();
 		}
+		
 		// 给添加按钮绑定事件
-		btn_add.onclick = function(){
+		$("#btn_add").on("click",function(){
+			console.log(this);
 			document.querySelector("input[name=name]").value = "";
 			document.querySelector("input[name=description]").value = "";
 			document.querySelector("input[name=id]").value = "";
 			
-		}
+		})
 		// 当光标移动的某一行上，为这一行添加背景
 		tbody.onmouseover = function(event){
 			var target = event.target;
@@ -169,11 +179,16 @@
 				target.parentNode.className = ""
 			}
 		}
+	
 
 		// 给删除按钮绑定事件
 		tbody.onclick = function(event){
 			if(event.target.nodeName === "A"){
 				switch(event.target.className){
+					case"btn_details":
+					var url="./pages/product_details.html"
+						$("#wrapper").load(url+"?time",Math.random());
+					break;
 					case "btn_del":
 						// 1. 先获取要删除的id
 						var id = event.target.parentNode.parentNode.firstElementChild.firstElementChild.value;
@@ -192,10 +207,44 @@
 						var description = event.target.parentNode.parentNode.children[3].innerText;
 						document.querySelector("input[name=name]").value = name;
 						document.querySelector("input[name=description]").value = description;
-						document.querySelector("input[name=id]").value = id;break;
+						document.querySelector("input[name=id]").value = id;
+						// var url = baseURL+"/product/updateProduct";
+						// var data = "";
+						// if(id){
+						// 	data="id="+id+"&name="+name+"&description="+description
+						// }else{
+						// 	data="name="+name+"&description="+description
+						// }
+						console.log(id);
+						console.log(name);
+						// var xhr=new XMLHttpRequest();
+						// xhr..open()
+						document.forms[0].onsubmit = function(event){
+						// 1. 获取用户的输入
+
+						var id = document.querySelector("input[name=id]").value;
+						var name = document.querySelector("input[name=name]").value;
+						var description = document.querySelector("input[name=description]").value;
+
+						var url = baseURL+"/product/updateProduct";
+						var data;
+			 			if(id){
+							data = "id="+id+"&name="+name+"&description="+description;
+						} else {
+							data = "name="+name+"&description="+description;
+						}
+
+						$.post(url,data,function(a,b){
+							alert(a.message);
+							reloadData();
+						});
+						
+						
+						
 				}
 			}
 		}
+	}
 		// 重载数据
 		function reloadData(){
 			//1. 通过ajax获取后台数据
